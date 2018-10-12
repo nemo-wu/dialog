@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Dialog</title>
+<link rel="stylesheet" href="css/dialog.css">
+<link rel="stylesheet" href="css/dialog-simple.css">
+</head>
+<body>
+
+<h1>Dialog Sample</h1>
+
+<button onclick="doSimpleAlert()">Simple alert</button>
+<br> <br>
+<button onclick="doAlert()">Alert with caption</button>
+<br> <br>
+<button onclick="doConfirm()">Confirm</button>
+<br> <br>
+<button onclick="doTemplate()">Template</button>
+<br> <br>
+<button onclick="doIframe()">iframe</button>
+<br> <br>
+<button onclick="doUserDefine()">User define</button>
+
+<div id="tpl" style="display: none;">
+    Input name then close: <input class="name" placeholder="Please input nemo">
+</div>
+
+<script type="text/javascript" src="js/dialog.js"></script>
+<script type="text/javascript" src="js/dialog-polyfill.js"></script>
+<script>
+
+function doSimpleAlert() {
+    Dialog.alert('Hello Dialog!');
+}
+
+function doAlert() {
+    Dialog.alert('Hello Caption', 'Caption');
+}
+
+function doConfirm() {
+    Dialog.confirm('Are you sure to leave', 'Question', (dlg) => {
+        alert('Bye!');
+        dlg.close();
+    }, (dlg) => {
+        alert('Thank you!');
+        dlg.close();
+    });
+}
+
+function doTemplate() {
+    let dlg = Dialog.template(document.getElementById('tpl'), 'Use template');
+    dlg.beforeClosing(() => {
+        let name = dlg.content.querySelector('.name').value;
+        const require = 'nemo';
+        if (name != require) {
+            alert('You must input nemo');
+            return false;
+        } else {
+            return true;
+        }
+    }).closed(() => { alert('Close'); })
+    .cancelable = false;
+}
+
+function doIframe() {
+    Dialog.iframe('http://10.10.90.111/tools/gcolorpicker/gcolorpicker.html', 'Color Picker', '360px', '440px');
+}
+
+function doUserDefine() {
+    let dlg = new Dialog({
+        caption: 'User define dialog',
+        message: 'You can click [Abort] to exit.',
+        showClose: false,
+        buttons: Dialog.buttons.ABORT_RETRY_IGNORE,
+
+        cancelable: false,
+        
+        abortHandler: (dlg) => { dlg.close(); },
+        retryHandler: () => { alert('retry...'); },
+        ignoreHandler: () => { alert('ignore'); },
+    });
+}
+
+</script>
+</body>
+</html>
