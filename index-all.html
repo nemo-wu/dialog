@@ -8,23 +8,25 @@
 </head>
 <body>
 
-<h1>Dialog Sample</h1>
+    <h1>Dialog Sample</h1>
+    
+    <button onclick="doSimpleAlert()">Simple alert</button>
+    <br> <br>
+    <button onclick="doAlert()">Alert with caption</button>
+    <br> <br>
+    <button onclick="doConfirm()">Confirm</button>
+    <br> <br>
+    <button onclick="doTemplate()">Template</button>
+    <br> <br>
+    <button onclick="doIframe()">iframe</button>
+    <br> <br>
+    <button onclick="doUserDefine()">User define</button>
 
-<button onclick="doSimpleAlert()">Simple alert</button>
-<br> <br>
-<button onclick="doAlert()">Alert with caption</button>
-<br> <br>
-<button onclick="doConfirm()">Confirm</button>
-<br> <br>
-<button onclick="doTemplate()">Template</button>
-<br> <br>
-<button onclick="doIframe()">iframe</button>
-<br> <br>
-<button onclick="doUserDefine()">User define</button>
+</body>
 
-<div id="tpl" style="display: none;">
+<template id="tpl">
     Input name then close: <input class="name" placeholder="Please input nemo">
-</div>
+</template>
 
 <script type="text/javascript" src="js/dialog.js"></script>
 <script type="text/javascript" src="js/dialog-polyfill.js"></script>
@@ -83,5 +85,4 @@ function doUserDefine() {
 }
 
 </script>
-</body>
 </html>
