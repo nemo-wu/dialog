@@ -1,11 +1,11 @@
 'use strict';
 /**
  * Polyfill of dialog
- * for Edge, Firefox
+ * for Firefox
  *
  * author Nemo
  *
- * v1.0
+ * v1.1
  * Supports:
  * show
  * hide
@@ -14,20 +14,15 @@
  */
 {
 
-let UA = window.navigator.userAgent;
-let browser = {
-    isEdge: UA.includes('Edge'),
+const UA = window.navigator.userAgent;
+const browser = {
     isFirefox: UA.includes('Firefox'),
 };
 
-let pass = (func = '') => {
-    console.log(`${func} passed.`);
-}
-
-let dlg = document.createElement('dialog');
+const dlg = document.createElement('dialog');
 let mask = undefined;
 
-let initMask = () => {
+const initMask = () => {
     if (mask != undefined)
         return;
 
@@ -57,15 +52,8 @@ if (!dlg.__proto__.show) {
         this.style.top = '50%';
         this.style.transform = 'translate(0, -50%)';
 
-        if (browser.isEdge) {
-            this.style.left = '50%';
-            this.style.transform = 'translate(-50%, -50%)';
-        }
-
         return this;
     };    
-} else {
-    pass('show');
 }
 
 // showModal support
@@ -78,8 +66,6 @@ if (!dlg.__proto__.showModal) {
 
         return this;
     };    
-} else {
-    pass('showModal');
 }
 
 // hide support
@@ -94,22 +80,19 @@ if (!dlg.__proto__.close) {
 
         return this;
     }
-} else {
-    pass('hide');
 }
 
 // cancel(ESC) support
-if (typeof dlg.oncancel == 'undefined') {
-    let sEventType = browser.isEdge ? 'keydown' : 'keypress';
+if (dlg.oncancel === void 0) {
     const dialogClass = 'dlg-dialog';
-    document.addEventListener(sEventType, (e) => {
-        if (e.keyCode != 27)
+    document.addEventListener('keypress', (e) => {
+        if (e.code !== 'Escape')
             return;
 
         let dlgs = document.querySelectorAll(`.${dialogClass}`);
         for (let i = 0; i < dlgs.length; i++) {
             let d = dlgs[i];
-            if (d.style.display == 'none')
+            if (d.style.display === 'none')
                 continue;
 
             if (d.wrapper.cancelable) {
@@ -117,8 +100,6 @@ if (typeof dlg.oncancel == 'undefined') {
             }
         }
     });
-} else {
-    pass('cancel');
 }
 
 }
